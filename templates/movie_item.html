@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block csstyle %}
+    <style>
+        .content_head{width: 60%;float: left;}
+        .image_show{width: 40%;float: left;}
+        .time{color: #999;margin: 10px;}
+        .clearfloat{clear:both}
+    .comment-content
+    {
+        height: 100px;
+        font-size: 14px;
+        text-align: left;
+        overflow: auto;
+        user-modify: read-write-plaintext-only;
+        margin: 5px 8%;
+        border: solid 1px darkgray;
+        border-radius: 10px;
+    }
+    .comment-publish {
+        font-size: 14px;
+        text-align: center;
+        margin: auto;
+        width: 80%;
+    }
+
+    </style>
+    <script>
+    $(function () {
+        $("nav").addClass("scrolled").addClass("awake");
+    })
+    window.onscroll= function(){
+                //变量t是滚动条滚动时，距离顶部的距离
+                var t = document.documentElement.scrollTop||document.body.scrollTop;
+                var scrollup = document.getElementById('scrollup');
+                $("nav").addClass("scrolled").addClass("awake").addClass("pb_navbar");
+                $("nav").css({"position":"fixed","background-color": "#170707"});
+            }
+
+    function publishTie()
+        {
+            {% if request.user.username %}
+                var username = "{{ request.user.username }}";
+            {% else %}
+                var username = "";
+            {% endif %}
+            if (username == "")
+            {
+                alert("Please login first!");
+                return;
+            }
+            var radio_data=-1
+            var radio = document.getElementsByName("score")
+            for(var i =0 ; i<radio.length;i++){
+                if(radio[i].checked){
+                    radio_data = radio[i].value
+                }
+            }
+            if (radio_data == -1){
+                alert("Please rate this movie:");
+                return
+            }
+
+            var uid = "{{ item.id }}";
+            var content = $(".comment-content").html();
+            var data = {"content":content, "id": uid, "score": radio_data};
+            $.post("{% url 'publishcomment' %}", data, function(result)
+            {
+                var err = result["err"];
+                if (err ==0)
+                {
+                    $(".comment-content").html("");
+                    window.location.href = "{% url 'movie_detail' %}?id={{item.id}}";
+                }
+            });
+        }
+    </script>
+
+{% endblock %}
+
+{% block content %}
+    <section class="pb_section pb_section_v1" data-section="about" id="index">
+      <div class="container">
+          <div class="artical_content">
+            <div class="content_head">
+                <h3 class="article_title">{{item.name}}</h3>
+                <p class="time">Publish Time：{{item.publish_time}}&nbsp;</p>
+                <p class="time">Rate：{{item.star}}&nbsp;</p>
+                <p class="time">Duration：{{item.duration}}minutes&nbsp;</p>
+                <p class="time">Actors：{{item.actor}}&nbsp;</p>
+            </div>
+            <div class="image_show">
+                <img src="/{{ item.pic.url }}" style="width: 150px">
+            </div>
+           <div class="clearfloat"></div>
+
+            <hr/>
+              <p>Description：</p>
+            <article>
+
+                {{item.detail|safe}}
+            </article>
+
+            <hr/>
+            <div class="feedback_area_title">
+                Comment list
+            </div>
+            <div style="text-align:left" id="commend_div_id">
+                {% for commend in item.tie_comment.all %}
+                    <div class="commend-item">
+                        <div class="commend-people">
+                            {{commend.person }}<span class="commend-data">({{ commend.create_time }})</span>:
+                        </div>
+                        <div class="commend-speak">
+                            {{ commend.content | safe }}({{commend.score}}Starts)
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="comment-content" contenteditable="true"></div>
+                <div>
+                    <input type="radio"   value="1"  name="score">1 point</input>
+                    <input type="radio"   value="2"  name="score">2 points</input>
+                    <input type="radio"   value="3"  name="score">3 points</input>
+                    <input type="radio"   value="4"  name="score">4 points</input>
+                    <input type="radio"   value="5"  name="score">5 points</input>
+                </div>
+
+                <div class="comment-publish">
+                    <button type="button" class="btn btn-primary" style="float: right" onclick="publishTie()">Publish</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
