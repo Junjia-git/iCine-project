@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 
 
 def mobile_validate(value):
-    mobile_re = re.compile(r'^[0-9]{10}$')
+    mobile_re = re.compile('^[0-9]{10}$')
     if not mobile_re.match(value):
         raise ValidationError('Phone Number Not Valid!')
 

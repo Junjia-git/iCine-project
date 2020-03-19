@@ -74,3 +74,19 @@ class PublishCommentView(LoginRequiredMixin, View):
             return HttpResponse(json.dumps({"err": 0}), content_type='application/json')
         except Exception as e:
             raise Http404
+
+class FavorateView(LoginRequiredMixin, View):
+
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(FavorateView, self).dispatch(*args, **kwargs)
+
+    def post(self, request):
+        try:
+            uid = int(request.POST["id"])
+            movie = MovieModel.objects.get(id=uid)
+            FavorateModel.objects.create(person=request.user,  create_time=datetime.datetime.now(),
+                                        movie=movie)
+            return HttpResponse(json.dumps({"err": 0}), content_type='application/json')
+        except Exception as e:
+            raise Http404

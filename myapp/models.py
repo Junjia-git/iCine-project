@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from custom_user.models import UserProfile
 
 
@@ -8,6 +9,10 @@ class ClassifyModel(models.Model):
         verbose_name = "Movie Type"
         verbose_name_plural = verbose_name
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(ClassifyModel, self).save(*args, **kwargs)
+    
     def __str__(self):
         return self.name
 
@@ -39,5 +44,13 @@ class CommentModel(models.Model):
     # Comment Time
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="Comment Time")
     movie = models.ForeignKey(MovieModel, related_name="tie_comment", verbose_name = "Comment page", on_delete=models.CASCADE)
+    class Meta:
+        ordering = ['-create_time']
+
+class FavorateModel(models.Model):
+    person = models.ForeignKey(UserProfile, unique=False, verbose_name="Colectioner", on_delete=models.CASCADE)
+    movie = models.ForeignKey(MovieModel, verbose_name="movie", on_delete=models.CASCADE)
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="Colection time")
+
     class Meta:
         ordering = ['-create_time']

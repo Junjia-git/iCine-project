@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.contrib.auth.models import Group
@@ -9,6 +10,8 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
+from django.core.files.base import ContentFile
+from myapp.models import FavorateModel
 
 
 # Create your views here.
@@ -80,19 +83,45 @@ class LoginView(View):
 
 
 class DetailView(View):
+
     def get(self, request):
-        return render(request, "detail.html", {"request": request})
+        favorate_list = FavorateModel.objects.filter(person=request.user)
+        return render(request, "detail.html", {"request": request, "favorate_list": favorate_list})
+
 
     def post(self, request):
-        user = UserProfile.objects.get(username=request.user.username)
-        mobile = request.POST.get("mobile", "")
-        wechat = request.POST.get("wechat", "")
-        location = request.POST.get("location", "")
-        user.mobile = mobile
-        user.wechat = wechat
-        user.location = location
-        user.save()
-        return render(request, "detail.html", {"request": request})
+        user_id = request.POST.get("id")
+        address = request.POST.get("address")
+        phone = request.POST.get("phone")
+        email = request.POST.get("email")
+        obj = UserProfile.objects.get(id=int(user_id))
+        obj.location = address
+        obj.mobile = phone
+        obj.email = email
+        obj.save()
+        return HttpResponseRedirect(reverse("users:detail"))
+
+
+# modify avatar
+class ChangeAvatarView(View):
+
+    def post(self, request):
+        obj = UserProfile.objects.get(id=request.user.id)
+        pic = ContentFile(request.FILES['file'].read())
+        obj.image.save(request.FILES['file'].name, pic)
+        obj.save()
+        return HttpResponse(json.dumps({'code':0, "avatar": obj.image.url}))
+
+
+# reset password
+class ResetPasswordView(View):
+    def post(self, request):
+        obj = UserProfile.objects.get(id=request.user.id)
+        password = request.POST.get("password")
+        obj.set_password(password)
+        obj.save()
+        return HttpResponse(json.dumps({'code':0, "avatar": obj.image.url}), content_type="application/json")
+
 
 
 

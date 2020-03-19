@@ -24,6 +24,7 @@ urlpatterns = [
     url('movie-item/', MovieDetail.as_view(), name='movie_detail'),
     url('^sort/$', SortView.as_view(), name='sort'),
     url('^publishcomment/', PublishCommentView.as_view(), name = 'publishcomment'),
+    url('^favorate/', FavorateView.as_view(), name = 'favorate'),
     url('^users/', include('custom_user.urls', namespace = "users")),
 ]
 

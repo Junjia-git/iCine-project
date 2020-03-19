@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block csstyle %}
+    <style>
+        .news-content{
+        margin: 3px 0;
+        max-height: 100px ;
+        position: relative;
+        overflow: hidden;
+    }
+    .news-content dt{color: #3ebb2b;font-size: 14px;padding-top:4px;padding-left: 130px;}
+    .news-content dd{
+        color: #555;
+        padding-left: 130px;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .news-pic{position: absolute;top: 0px;left: -130px;}
+    .news-li{height: 30px;line-height: 30px;margin: 5px 0;color: #555;border-bottom: 1px dashed #ccc;overflow: hidden}
+    .news-li span{float: right; color: #999;}
+    .news-li a{color: #555;}
+    .other-articles-list{padding: 14px;}
+    .genre{float:left;text-align: center;width: 30%;   margin: 1%; margin-bottom: 2%;border: 1px solid #3ebb2b;border-radius: 3px;    height: 300px;}
+    .genre>a>dt>img{width:70%}
+    .genre dt{padding-bottom: 5px;}
+    .genre:hover{box-shadow: 0px 1px 7px 2px #3ebb2b;}
+    .genre dd {font-size: 20px;}
+    </style>
+    <style>
+    .profile
+    {
+        width: 70%;
+        height: 500px;
+        margin: 50px 0;
+        border: 1px solid #eee;
+        float: left;
+    }
+    .profile > p{
+        height: 40px;
+        background-color: lightgray;
+        color: black;
+        line-height: 40px;
+        padding-left: 10px;
+    }
+    .profile > form {
+        overflow: hidden;
+        margin-top: -10px;
+    }
+    .profile > form > div.left {
+        float: left;
+        width: 40%;
+        border-right:1px solid #eee;
+    }
+    .profile > form > div.left > div:nth-child(1) {
+        height: 300px;
+        position: relative;
+        border-bottom: 1px solid #eee;
+    }
+    .profile > form > div.left > div:nth-child(1) > input{
+        display: none;
+    }
+    .profile > form > div.left > div:nth-child(1) > button{
+        position: absolute;
+        transform: translateX(-50%);
+        left: 50%;
+        bottom:40px;
+    }
+
+    .profile > form > div.left > div:nth-child(2){
+        height: 150px;
+        position: relative;
+    }
+    .profile > form > div.left > div:nth-child(2) > div{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%)translateX(-50%);
+        left: 50%;
+    }
+
+    .profile img{
+        width: 150px;
+        height: 150px;
+        border-radius: 75px;
+        position: absolute;
+        transform: translateX(-50%);left: 50%;
+        top:40px;
+    }
+    .profile div.right{
+        float: left;
+        width: 60%;
+    }
+    .profile div.right > div{
+        border-bottom: 1px solid #eee;
+        padding: 17px 30px;
+    }
+    .profile div.right > div > input{
+        width: 300px;
+    }
+   .profile  div.show-submit{
+        border: none;
+        position: relative;
+        height: 94px;
+    }
+    .profile div.show-submit > input{
+        width:100px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%)translateX(-50%);
+        left: 50%;
+    }
+
+
+    div.favorate-list{
+        margin-top: 20px;
+        display: inline-block;
+        border: solid 1px #ddd;
+    }
+    div.favorate-list ol {
+        padding: 0px 20px;
+    }
+    div.favorate-list a {
+        color: white;
+    }
+    div.favorate-list li{height:16px;line-height:16px;overflow:hidden;position:relative;padding:0 70px 0 30px;margin:0 0 10px 0;}
+    div.favorate-list li em{background:url(/static/image/mun.gif) no-repeat;width:20px;height:16px;overflow:hidden;display:block;position:absolute;left:0;top:0;text-align:center;font-style:normal;color:#333;}
+    div.favorate-list li em{background-position:0 -16px;}
+    div.favorate-list li.top em{background-position:0 0;color:#fff;}
+    div.favorate-list li .num{position:absolute;right:0;top:0;color:#999;}
+
+    div.favorate-list > div {
+        width: 100%;
+        height: 50px;
+        background-color: #839c88;
+        margin-bottom: 20px;
+    }
+    div.favorate-list > div > span:nth-child(1)
+    {
+        color: white;
+        font-size: 20px;
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        margin-left: 20px;
+    }
+
+    div.favorate-list > div > span:nth-child(2)
+    {
+        color: white;
+        font-size: 20px;
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        margin-left: 20px;
+        float: right;
+    }
+
+
+
+    </style>
+    <script>
+    $(function () {
+        $("nav").addClass("scrolled").addClass("awake");
+    })
+    window.onscroll= function(){
+                var t = document.documentElement.scrollTop||document.body.scrollTop;
+                var scrollup = document.getElementById('scrollup');
+                $("nav").addClass("scrolled").addClass("awake").addClass("pb_navbar");
+                $("nav").css({"position":"fixed","background-color": "#170707"});
+
+            }
+
+    </script>
+     <script type="application/javascript">
+    $(document).ready(function(){
+        $('#upload-img-btn').click(function(){
+            $('#upload-img').click();
+        });
+
+        // ①for input setting change action
+        $('#upload-img').change(function () {
+        //    ②if value not null，Call the file load method
+            if($(this).val() != ""){
+                fileLoad(this);
+            }
+        })
+
+    });
+
+    function change_password() {
+        var password = $("#password").val()
+        $.post("{% url 'users:reset-password' %}",{"password":password,"csrfmiddlewaretoken":"{{ csrf_token }}"},function(result){
+            alert("changed success");
+          });
+
+    }
+
+    function fileLoad(ele){
+          //④create a formData object
+        var formData = new FormData();
+        //⑤get the elements val
+        var name = $(ele).val();
+          //⑥ get files
+        var files = $(ele)[0].files[0];
+        formData.append("file", files);
+        formData.append("name", name);
+        formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+        $.ajax({
+            url: "{% url 'users:change-avatar' %}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false, 
+            beforeSend: function () {
+            },
+            success: function (responseStr) {
+               $("#avatar").attr("src", JSON.parse(responseStr)['avatar'] + "?a"+Date());
+               alert("modify success");
+            }
+            ,
+            error : function (responseStr) {
+                alert("wrong");
+            }
+        });
+    }
+
+
+    </script>
+
+
+{% endblock %}
+
+{% block content %}
+    <section class="pb_section pb_section_v1" data-section="about" id="index">
+      <div class="container">
+
+        <div class="profile">
+               <p>Personal information</p>
+               <form method="post" action="{% url 'users:detail' %}" id="form1">
+                   <input name="id" style="display: none;" value="{{ user.id }}"/>
+                   <div class="left">
+                       <div>
+                           <img {% if user.image %} src="{{ user.image.url }}" {% endif %} id="avatar">
+                           <input type="file" name="photo" id="upload-img"/>
+
+                           <button type="button" class="btn btn-info" id="upload-img-btn">
+                            Modify the picture
+                           </button>
+
+
+                       </div>
+                       <div>
+
+                               <div>
+                                <input type="password" name="password" id="password">
+                                <button type="button" class="btn btn-info" onclick="change_password()">
+                                    Modify the password
+                                </button>
+                               </div>
+
+                       </div>
+                   </div>
+                   <div class="right">
+                       <div>
+                           <span>username:</span>&nbsp&nbsp&nbsp<input name="name" value="{{ user.username}}" disabled>
+                       </div>
+                       <div>
+                           <span>address:</span>&nbsp&nbsp&nbsp<input name="address" value="{{ user.location }}">
+                       </div>
+                       <div>
+                           <span>mobile number:</span><input name="phone" value="{{ user.mobile }}">
+                       </div>
+                       <div>
+                           <span>email-address:</span>&nbsp&nbsp<input name="email" value="{{ user.email }}">
+                       </div>
+
+                       <div class="show-submit">
+                           <input type="submit" class="btn btn-info">
+                       </div>
+
+                   </div>
+                   {% csrf_token %}
+               </form>
+           </div>
+
+
+          <div class="favorate-list" style="float: right;width: 30%; margin-top: 50px">
+            <div>
+                <span>collection</span>
+                <span><a href="#">more>></a></span>
+            </div>
+            <ol>
+                {% for item in favorate_list %}
+                    <li {% if forloop.counter0 < 2 %}class="top" {% endif %}>
+                        <em>{{ forloop.counter }}</em><p><a href="{% url 'movie_detail' %}"?id="{{ item.movie.id }}" style="color: black">{{ item.movie.name }}</a></p><span class="num">{{ item.movie.star }}</span>
+                    </li>
+                {% endfor %}
+            </ol>
+
+
+          </div>
+      </div>
+    </section>
+{% endblock %}
+
+
+
+
+
+
+
+

@@ -30,12 +30,25 @@
         $("nav").addClass("scrolled").addClass("awake");
     })
     window.onscroll= function(){
-                //变量t是滚动条滚动时，距离顶部的距离
                 var t = document.documentElement.scrollTop||document.body.scrollTop;
                 var scrollup = document.getElementById('scrollup');
                 $("nav").addClass("scrolled").addClass("awake").addClass("pb_navbar");
                 $("nav").css({"position":"fixed","background-color": "#170707"});
             }
+    
+    function tofavorate() {
+        var uid = "{{ item.id }}";
+        var data = {"id": uid};
+        $.post("{% url 'favorate' %}", data, function(result)
+            {
+                var err = result["err"];
+                if (err ==0)
+                {
+                    alert("Collection of success");
+                    window.location.href = "{% url 'movie_detail' %}?id={{item.id}}";
+                }
+            });
+    }
 
     function publishTie()
         {
@@ -88,6 +101,7 @@
                 <p class="time">Rate：{{item.star}}&nbsp;</p>
                 <p class="time">Duration：{{item.duration}}minutes&nbsp;</p>
                 <p class="time">Actors：{{item.actor}}&nbsp;</p>
+                <button  class="btn btn-primary" onclick="tofavorate()"> favorite</button>
             </div>
             <div class="image_show">
                 <img src="/{{ item.pic.url }}" style="width: 150px">
