@@ -25,7 +25,7 @@ SECRET_KEY = '6u8yr=zi(6kw+b@=684vmp!uu!2zis^pep_9a#0(jmb(2f5@x0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['JayHuang.pythonanywhere.com']
 
 AUTH_USER_MODEL = "custom_user.UserProfile"
 # Application definition
