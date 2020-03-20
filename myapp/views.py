@@ -27,8 +27,8 @@ class HomeView(View):
         return super(HomeView, self).dispatch(*args, **kwargs)
 
     def get(self, request):
-        recent_movie_list = MovieModel.objects.order_by("-publish_time")[:5]
-        recommend_movie_list =  MovieModel.objects.order_by("-star")[:5]
+        recent_movie_list = MovieModel.objects.order_by("-publish_time")[:10]
+        recommend_movie_list =  MovieModel.objects.order_by("-star")[:10]
         return render(request, 'index.html',{"recent_movie_list":recent_movie_list,
                                              "recommend_movie_list": recommend_movie_list})
 

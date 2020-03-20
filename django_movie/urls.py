@@ -26,6 +26,7 @@ urlpatterns = [
     url('^publishcomment/', PublishCommentView.as_view(), name = 'publishcomment'),
     url('^favorate/', FavorateView.as_view(), name = 'favorate'),
     url('^users/', include('custom_user.urls', namespace = "users")),
+    url('^blog/', include('blog.urls', namespace = 'blog')),
 ]
 
 from django.views.static import serve

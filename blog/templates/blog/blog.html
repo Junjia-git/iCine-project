@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block csstyle %}
+    <style>
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #444444;
+    }
+
+    ul {
+      margin: 0;
+    }
+
+    .bg-steel {
+      background-color: #5f788a;
+    }
+
+    .content-section {
+      background: #ffffff;
+      padding: 10px 20px;
+      border: 1px solid #dddddd;
+      border-radius: 4px;
+      box-shadow: 0 3px 5px 0 rgba(0,0,0,.35);
+      margin-bottom: 30px;
+    }
+
+    .article-title {
+      margin-bottom: 28px; 
+    }
+    .article-font{
+      font-size: 22px;
+      font-family: helvetica neue,Helvetica,Arial,sans-serif;
+      color: #494949;
+    }
+
+    a.article-title:hover {
+      color: #428bca;
+      text-decoration: none;
+    }
+
+    .article-content {
+      white-space: pre-line;
+    }
+    .article-subTitle{
+      font-size: 13px;
+      margin-bottom: 28px;
+    }
+
+    .article-img {
+      height: 65px;
+      width: 65px;
+      margin-right: 16px;
+    }
+
+    .article-metafont{
+      font-size: 16px;
+      color: #494949;
+    }
+    .article-metadata {
+      padding-bottom: 1px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid #e3e3e3
+    }
+
+    .article-metadata a:hover {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .article-svg {
+      width: 25px;
+      height: 25px;
+      vertical-align: middle;
+    }
+
+    .account-img {
+      height: 125px;
+      width: 125px;
+      margin-right: 20px;
+      margin-bottom: 16px;
+    }
+
+    .account-heading {
+      font-size: 2.5rem;
+    }
+
+    .col-xs-12 {
+      width: 100%;
+    }
+
+    .img-responsive {
+      max-width: 100%
+      height: auto;
+    }
+    </style>
+    <script>
+    $(function () {
+        $("nav").addClass("scrolled").addClass("awake");
+    })
+    window.onscroll= function(){
+                //变量t是滚动条滚动时，距离顶部的距离
+
+                var t = document.documentElement.scrollTop||document.body.scrollTop;
+                var scrollup = document.getElementById('scrollup');
+                $("nav").addClass("scrolled").addClass("awake").addClass("pb_navbar");
+                $("nav").css({"position":"fixed","background-color": "#170707"});
+
+            }
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+    <section class="pb_section pb_section_v1" data-section="about" id="index">
+      <div class="container">
+            <div class="row mt-0 mb-3">
+              <div class="col-md-8">
+                {% for post in posts %}
+                  <article class="media content-section">
+                    <div class="media-body">
+                      <div class="article-metadata">
+                        <a class="article-metafont mr-2" href="#">{{ post.author }}</a>
+                        <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+                      </div>
+
+<!--                       <div class="col-xs-12">
+                        <a href="{% url 'blog:postDetail' post.id %}">
+                          <div align="center">
+                            <img class="img-responsive" src="{{ post.img.url }}" width="568px" height="296.88px" alt="{{ post.subTitle }}">
+                          </div>
+                        </a>
+                      </div> -->
+
+                      <div class="col-xs-12">
+                      <div class="article-title">
+                          <a class="article-font" href="{% url 'blog:postDetail' post.id %}">{{ post.title }}</a>
+                      </div>
+                      <div class="article-subTitle">
+                        {{ post.subTitle }}
+                      </div>
+                      </div>
+
+                    </div>
+                  </article>
+                {% endfor %}
+              </div>
+
+              <div class="col-md-4">
+                <div class="content-section">
+                  <h3 class="mt-3">Blog</h3>
+                  <p class='text-muted'>Post your blog and see the latest blog articles here.
+                    <ul class="list-group">
+                      <a href="/blog/"><li class="list-group-item list-group-item-light">Latest Posts</li></a>
+                      <a href="{% url 'blog:postCreate' %}"><li class="list-group-item list-group-item-light">New Posts</li></a>
+                    </ul>
+                  </p>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

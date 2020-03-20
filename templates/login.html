@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-signin-client_id" content="543255264980-dbouq1jsaaimmmeocaoma0jgofn4co5j.apps.googleusercontent.com">
 <title>Login</title>
 <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
     <style type="text/css">
@@ -16,6 +17,11 @@
             margin:10px 0;}
     </style>
 </head>
+
+gapi.load('auth2',function(){
+    gapi.auth2.init()l
+});
+
 <body>
 <div class="htmleaf-container">
 	<div class="wrapper">
@@ -27,12 +33,33 @@
 				<input type="submit" value="Login" id="login-button"></input>
                 {% csrf_token %}
 			</form>
+            <div id="my-signin2"></div>
              <div class="error btns login-form-tips" id="jsLoginTips">{% for key,error in login_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</div>
-		</div>
+        </div>
+        <script>
+          function onSuccess(googleUser) {
+            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+          }
+          function onFailure(error) {
+            console.log(error);
+          }
+          function renderButton() {
+            gapi.signin2.render('my-signin2', {
+              'scope': 'profile email',
+              'width': 240,
+              'height': 50,
+              'longtitle': true,
+              'theme': 'dark',
+              'onsuccess': onSuccess,
+              'onfailure': onFailure
+            });
+          }
+        </script>
 	</div>
 </div>
 <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';color:#000000">
 <h1>iCine Movie System</h1>
 </div>
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 </body>
 </html>
