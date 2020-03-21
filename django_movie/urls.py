@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
 from myapp.views import *
+from myapp import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,6 +28,7 @@ urlpatterns = [
     url('^favorate/', FavorateView.as_view(), name = 'favorate'),
     url('^users/', include('custom_user.urls', namespace = "users")),
     url('^blog/', include('blog.urls', namespace = 'blog')),
+    url('^search/',views.search,name='search'),
 ]
 
 from django.views.static import serve

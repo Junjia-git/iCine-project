@@ -33,28 +33,27 @@ gapi.load('auth2',function(){
 				<input type="submit" value="Login" id="login-button"></input>
                 {% csrf_token %}
 			</form>
-            <div id="my-signin2"></div>
              <div class="error btns login-form-tips" id="jsLoginTips">{% for key,error in login_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</div>
         </div>
         <script>
-          function onSuccess(googleUser) {
-            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-          }
-          function onFailure(error) {
-            console.log(error);
-          }
-          function renderButton() {
-            gapi.signin2.render('my-signin2', {
-              'scope': 'profile email',
-              'width': 240,
-              'height': 50,
-              'longtitle': true,
-              'theme': 'dark',
-              'onsuccess': onSuccess,
-              'onfailure': onFailure
-            });
-          }
-        </script>
+        //   function onSuccess(googleUser) {
+        //     console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+        //   }
+        //   function onFailure(error) {
+        //     console.log(error);
+        //   }
+        //   function renderButton() {
+        //     gapi.signin2.render('my-signin2', {
+        //       'scope': 'profile email',
+        //       'width': 240,
+        //       'height': 50,
+        //       'longtitle': true,
+        //       'theme': 'dark',
+        //       'onsuccess': onSuccess,
+        //       'onfailure': onFailure
+        //     });
+        //   }
+        // </script>
 	</div>
 </div>
 <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';color:#000000">

@@ -7,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
+from myapp.bing_search import run_query
+
 # Create your views here.
 
 
@@ -90,3 +92,14 @@ class FavorateView(LoginRequiredMixin, View):
             return HttpResponse(json.dumps({"err": 0}), content_type='application/json')
         except Exception as e:
             raise Http404
+
+def search(request):
+    result_list=[]
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip() 
+        if query:
+            # Run our Bing function to get the results list!
+            result_list = run_query(query)
+    
+    return render(request, 'search.html', {'result_list': result_list})

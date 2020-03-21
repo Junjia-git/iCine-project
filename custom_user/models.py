@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 class UserProfile(AbstractUser):
     mobile = models.CharField(max_length=11, null=True, blank=True, verbose_name = "Phone Number")
-    image = models.ImageField(upload_to="image", default=u"image/default.jpg", max_length=100)
+    image = models.ImageField(upload_to = "image", verbose_name = "Images")
     wechat = models.CharField(max_length=11, null=True, blank=True, verbose_name="FaceBook ID")
     location = models.CharField(max_length=11, null=True, blank=True, verbose_name="Address")
 

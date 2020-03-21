@@ -14,16 +14,16 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='classifymodel',
-            options={'verbose_name': '类别', 'verbose_name_plural': '类别'},
+            options={'verbose_name': 'genres', 'verbose_name_plural': 'genres'},
         ),
         migrations.AlterModelOptions(
             name='moviemodel',
-            options={'verbose_name': '电影', 'verbose_name_plural': '电影'},
+            options={'verbose_name': 'movies', 'verbose_name_plural': 'movies'},
         ),
         migrations.AddField(
             model_name='moviemodel',
             name='star',
-            field=models.IntegerField(default=1, verbose_name='星级'),
+            field=models.IntegerField(default=1, verbose_name='star'),
             preserve_default=False,
         ),
     ]

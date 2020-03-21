@@ -64,7 +64,7 @@
               {% for item in movie_list%}
                   <dl class="genre">
                     <a href={%  url 'movie_detail' %}?id={{item.id}}>
-                        <dt><img src="/{{ item.pic.url }}" alt="{{ item.name }}"></dt>
+                        <dt><img src="{{ item.pic.url }}" alt="{{ item.name }}"></dt>
                         <dd>{{ item.name }}</dd>
                     </a>
                   </dl>
